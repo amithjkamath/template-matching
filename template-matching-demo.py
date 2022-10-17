@@ -1,5 +1,6 @@
 """
 Inspired by https://www.loginradius.com/blog/engineering/guest-post/opencv-web-app-with-streamlit/
+and https://medium.com/analytics-vidhya/finding-waldo-feature-matching-for-opencv-9bded7f5ab10 
 """
 
 import numpy as np
@@ -74,7 +75,7 @@ def main_loop():
     threshold = 0.6
     # finding the values where it exceeds the threshold
     loc = np.where(corr >= threshold)
-    template_shape = template_image.shape[::-1]
+    template_shape = template_image.shape[::-1]  # 3, W, H
     for pt in zip(*loc[::-1]):
         # draw rectangle on places where it exceeds threshold
         cv.rectangle(
@@ -101,8 +102,6 @@ def main_loop():
 
     out_image = scene_image.copy()
     out_shape = out_image.shape  # H, W, 3
-    print(out_shape)
-    print(template_shape)  # 3, W, H
     range_movement = (out_shape[1] - template_shape[1]) * \
         (out_shape[0] - template_shape[2])
 
