@@ -2,10 +2,45 @@
 Inspired by https://www.loginradius.com/blog/engineering/guest-post/opencv-web-app-with-streamlit/
 and https://medium.com/analytics-vidhya/finding-waldo-feature-matching-for-opencv-9bded7f5ab10 
 """
-
+import hmac
 import numpy as np
 import cv2 as cv
 import streamlit as st
+
+
+def check_password():
+    """Returns `True` if the user had a correct password."""
+
+    def login_form():
+        """Form with widgets to collect user information"""
+        with st.form("Credentials"):
+            st.text_input("Username", key="username")
+            st.text_input("Password", type="password", key="password")
+            st.form_submit_button("Log in", on_click=password_entered)
+
+    def password_entered():
+        """Checks whether a password entered by the user is correct."""
+        if st.session_state["username"] in st.secrets[
+            "passwords"
+        ] and hmac.compare_digest(
+            st.session_state["password"],
+            st.secrets.passwords[st.session_state["username"]],
+        ):
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # Don't store the username or password.
+            del st.session_state["username"]
+        else:
+            st.session_state["password_correct"] = False
+
+    # Return True if the username + password is validated.
+    if st.session_state.get("password_correct", False):
+        return True
+
+    # Show inputs for username + password.
+    login_form()
+    if "password_correct" in st.session_state:
+        st.error("😕 User not known or password incorrect")
+    return False
 
 
 def compute_correlation(scene: np.array, template: np.array):
@@ -24,14 +59,12 @@ def compute_correlation(scene: np.array, template: np.array):
     return res
 
 
-def overlay_correlation(scene: np.array, corr: np.array, template: np.array, x: int, y: int):
-    pass
-
-
 def main_loop():
     """
     MAIN_LOOP is the main loop (duh) for this streamlit App.
     """
+    if not check_password():
+        st.stop()
 
     st.set_page_config(layout="wide")
 
