@@ -54,7 +54,7 @@ cd template-matching
 ```bash
 make setup    # Initial setup
 make run      # Run the app
-make deploy   # Deploy to HuggingFace
+make deploy   # Deploy to GitHub & HuggingFace
 make help     # See all commands
 ```
 
@@ -65,10 +65,10 @@ make help     # See all commands
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Install dependencies
-uv sync
+uv sync --no-build-isolation
 
 # Run the app
-uv run streamlit run app.py
+uv run --no-build-isolation streamlit run app.py
 ```
 
 ## 📋 Requirements

@@ -1,5 +1,5 @@
 # Makefile for Template Matching Demo
-.PHONY: help setup run deploy clean test format lint install
+.PHONY: help setup run deploy clean test format lint install status
 
 # Default target
 .DEFAULT_GOAL := help
@@ -30,9 +30,13 @@ run: ## Run the app locally
 	@chmod +x run_local.sh
 	@./run_local.sh
 
-deploy: ## Deploy to HuggingFace Spaces
+deploy: ## Deploy to GitHub & HuggingFace Spaces
 	@chmod +x deploy.sh
 	@./deploy.sh
+
+status: ## Check repository sync status
+	@chmod +x check_status.sh
+	@./check_status.sh
 
 clean: ## Clean up cache and temporary files
 	@echo "$(BLUE)🧹 Cleaning up...$(NC)"

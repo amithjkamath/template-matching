@@ -15,7 +15,12 @@
 
 ## Running the App
 
-### Simple Script
+### Option 1: Shell Script (Recommended)
+```bash
+./run_local.sh
+```
+
+### Option 2: Simple Script (Alternative)
 If you encounter build issues, use the simpler version:
 ```bash
 ./run_simple.sh
@@ -33,9 +38,11 @@ uv run --no-build-isolation streamlit run app.py
 
 The app will open in your browser at `http://localhost:8501`
 
-## Deploying to HuggingFace Spaces
+## Deploying to GitHub & HuggingFace Spaces
 
-### Option 1: Shell Script
+The deploy script now pushes to **both** GitHub and HuggingFace Spaces automatically.
+
+### Option 1: Shell Script (Recommended)
 ```bash
 ./deploy.sh
 ```
@@ -48,8 +55,14 @@ make deploy
 The script will:
 - Check for uncommitted changes
 - Prompt you to commit if needed
-- Push to the repository
-- HuggingFace Spaces will automatically rebuild
+- Push to GitHub (origin remote)
+- Push to HuggingFace Spaces (hf remote)
+- Show links to both deployed versions
+
+**Note:** If you don't have the HuggingFace remote configured, the script will show you how to add it:
+```bash
+git remote add hf https://huggingface.co/spaces/amithjkamath/template-matching
+```
 
 ## Troubleshooting
 
@@ -88,11 +101,29 @@ make help        # Show all commands
 make setup       # Initial setup
 make install     # Install dependencies
 make run         # Run locally
-make deploy      # Deploy to HuggingFace
+make deploy      # Deploy to GitHub & HuggingFace
+make status      # Check repository sync status
 make clean       # Clean cache files
 make update      # Update dependencies
 make info        # Show project info
 ```
+
+## Checking Sync Status
+
+Before deploying, you can check if your local repository is in sync with GitHub and HuggingFace:
+
+```bash
+./check_status.sh
+# or
+make status
+```
+
+This will show:
+- Current branch and uncommitted changes
+- Sync status with GitHub (origin)
+- Sync status with HuggingFace Spaces (hf)
+- Recent commits
+- Quick action commands
 
 ## Need Help?
 
