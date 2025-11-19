@@ -8,6 +8,7 @@ sdk_version: "1.40.1"
 app_file: app.py
 pinned: false
 license: mit
+short_description: Demonstration of template matching with waldo
 ---
 
 # template-matching
@@ -30,4 +31,4 @@ If the template is not exactly available in the scene (when there are size or ro
 
 ## Are there better similarity measures than correlation?
 
-Point based feature matching methods like SIFT, SURF, MSER and so on would work better in cases where the relative pose of the template with respect to the scene cannot be controlled. 
+Point based feature matching methods like SIFT, SURF, MSER and so on would work better in cases where the relative pose of the template with respect to the scene cannot be controlled.
