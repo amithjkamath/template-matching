@@ -2,45 +2,10 @@
 Inspired by https://www.loginradius.com/blog/engineering/guest-post/opencv-web-app-with-streamlit/
 and https://medium.com/analytics-vidhya/finding-waldo-feature-matching-for-opencv-9bded7f5ab10 
 """
-import hmac
 import numpy as np
 import cv2 as cv
 import streamlit as st
-
-
-def check_password():
-    """Returns `True` if the user had a correct password."""
-
-    def login_form():
-        """Form with widgets to collect user information"""
-        with st.form("Credentials"):
-            st.text_input("Username", key="username")
-            st.text_input("Password", type="password", key="password")
-            st.form_submit_button("Log in", on_click=password_entered)
-
-    def password_entered():
-        """Checks whether a password entered by the user is correct."""
-        if st.session_state["username"] in st.secrets[
-            "passwords"
-        ] and hmac.compare_digest(
-            st.session_state["password"],
-            st.secrets.passwords[st.session_state["username"]],
-        ):
-            st.session_state["password_correct"] = True
-            del st.session_state["password"]  # Don't store the username or password.
-            del st.session_state["username"]
-        else:
-            st.session_state["password_correct"] = False
-
-    # Return True if the username + password is validated.
-    if st.session_state.get("password_correct", False):
-        return True
-
-    # Show inputs for username + password.
-    login_form()
-    if "password_correct" in st.session_state:
-        st.error("😕 User not known or password incorrect")
-    return False
+from huggingface_hub import hf_hub_download
 
 
 def compute_correlation(scene: np.array, template: np.array):
@@ -63,16 +28,19 @@ def main_loop():
     """
     MAIN_LOOP is the main loop (duh) for this streamlit App.
     """
-    if not check_password():
-        st.stop()
-
     st.set_page_config(layout="wide")
 
     st.title("Template Matching Demo")
     st.subheader(
         "This app demonstrates how a template matching algorithm works: by sliding the template across the scene!")
 
-    template_image = cv.imread('waldo-template.jpeg')
+    # Load images from Hugging Face dataset
+    template_path = hf_hub_download(
+        repo_id="amithjkamath/exampleimages",
+        filename="waldo-template.jpeg",
+        repo_type="dataset"
+    )
+    template_image = cv.imread(template_path)
     template_image = cv.cvtColor(template_image, cv.COLOR_BGR2RGB)
 
     st.markdown(
@@ -84,7 +52,12 @@ def main_loop():
     st.markdown(
         "Now for the fun bit - can you find Waldo in the scene below? Most of us will take about 20 seconds, if not more!")
 
-    scene_image = cv.imread("waldo-scene.jpeg")
+    scene_path = hf_hub_download(
+        repo_id="amithjkamath/exampleimages",
+        filename="waldo-scene.jpeg",
+        repo_type="dataset"
+    )
+    scene_image = cv.imread(scene_path)
     scene_image = cv.cvtColor(scene_image, cv.COLOR_BGR2RGB)
 
     st.text("Can you find Waldo?")

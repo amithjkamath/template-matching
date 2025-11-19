@@ -1,8 +1,20 @@
+---
+title: Template Matching Demo
+emoji: 🔍
+colorFrom: blue
+colorTo: green
+sdk: streamlit
+sdk_version: "1.40.1"
+app_file: app.py
+pinned: false
+license: mit
+---
+
 # template-matching
 
 This is a demonstration of how template matching works by computing correlation between the search space and the template. 
 
-[Click here to run this on Streamlit](https://tinyurl.com/template-matching-demo).
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
 
 ## What is Template Matching?
 
